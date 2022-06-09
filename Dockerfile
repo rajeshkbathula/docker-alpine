@@ -1,22 +1,23 @@
-FROM ubuntu:20.04
+FROM alpine:3.16.0
 
-RUN apt-get update && apt-get install -y \
-    software-properties-common
-RUN add-apt-repository universe
-RUN apt-get update && apt-get install -y \
-    python3.8 \
-    python3-pip
+USER root
 
-RUN pip3 install awscli
+RUN apk add make unzip zip wget git bash curl
+RUN PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools && pip3 install virtualenv
 
-# Install tarraform
-RUN apt-get install -y curl unzip
-RUN cd
-RUN rm -rf terraform
-RUN mkdir terraform
-RUN cd terraform
-RUN rm -rf terraform_1.2.1_linux_amd64.zip
-RUN curl -O https://releases.hashicorp.com/terraform/1.2.1/terraform_1.2.1_linux_amd64.zip
-RUN unzip terraform_1.2.1_linux_amd64.zip -d  /usr/local/bin/
-#RUN rm -rf terraform_1.2.1_linux_amd64.zip
-# That's it - all done
+RUN pip install --no-cache-dir awscliv2
+
+RUN apk --no-cache add ca-certificates
+
+ENV HOME=/root
+
+ENV PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
+
+ENV asdf "$HOME/.asdf/asdf.sh"
+
+RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
+
+RUN asdf plugin add terraform
+RUN asdf plugin add python
