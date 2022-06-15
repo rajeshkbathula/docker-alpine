@@ -9,7 +9,7 @@ docker build -t alpine-image .
 
 * which project you want to execute replace that with your project absolute path as mentioned and run below command
 ```bash
-docker run -it -v ~/.aws:/root/.aws -v <your-project>:/src/<your-project>  alpine-image:latest bash 
+docker run -it -v ~/.ssh:/root/.ssh -v ~/.aws:/root/.aws -v <your-project>:/src/<your-project>  alpine-image:latest bash 
 ```
 
 * Execute below command to install terraform required version
