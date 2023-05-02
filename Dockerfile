@@ -49,8 +49,10 @@ ENV HOME=/root
 ENV PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 
 ENV asdf "$HOME/.asdf/asdf.sh"
+RUN apk add make unzip zip wget git bash curl openssh
 
-RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
+
+RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.2
 
 RUN asdf plugin add terraform
 RUN asdf plugin add python
