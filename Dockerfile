@@ -55,4 +55,4 @@ RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
 RUN asdf plugin add terraform
 RUN asdf plugin add python
 
-RUN asdf terraform install  1.2.3
+RUN asdf install terraform  1.2.3
