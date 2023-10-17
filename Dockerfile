@@ -12,7 +12,7 @@ RUN python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools && 
 RUN apk --no-cache add ca-certificates
 
 ARG GLIBC_VERSION=2.35-r0
-ARG AWSCLI_VERSION=2.11.11
+#ARG AWSCLI_VERSION=2.11.11
 
 # install glibc compatibility for alpine
 RUN apk --no-cache add \
@@ -25,25 +25,10 @@ RUN apk --no-cache add \
     && apk add --no-cache --force-overwrite \
         glibc-${GLIBC_VERSION}.apk \
         glibc-bin-${GLIBC_VERSION}.apk \
-        glibc-i18n-${GLIBC_VERSION}.apk \
-    && /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 \
-    && ln -sf /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2 \
-    && curl -sL https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWSCLI_VERSION}.zip -o awscliv2.zip \
-    && unzip awscliv2.zip \
-    && aws/install \
-    && rm -rf \
-        awscliv2.zip \
-        aws \
-        /usr/local/aws-cli/v2/current/dist/aws_completer \
-        /usr/local/aws-cli/v2/current/dist/awscli/data/ac.index \
-        /usr/local/aws-cli/v2/current/dist/awscli/examples \
-        glibc-*.apk \
-    && find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete \
-    && apk --no-cache del \
-        binutils \
-        curl \
-    && rm -rf /var/cache/apk/*
-    
+        glibc-i18n-${GLIBC_VERSION}.apk
+
+
+RUN apk add --no-cache aws-cli
 ENV HOME=/root
 
 ENV PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
